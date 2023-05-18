@@ -1,0 +1,17 @@
+{
+  "name": "routerider-b",
+  "version": "1.0.0",
+  "description": "BackEnd del proyecto final de Bootcamps - BIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "main": "node main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.1.1"
+  }
+}
