@@ -5,7 +5,7 @@ const router = express.Router();
 const commentController = require('../controllers/commentController');
 
 // rutas para el usuario
-router.get('/:userEmail', commentController.getUserComment);
+router.get('/', commentController.getAllComment);
 router.post('/', commentController.createUserComment);
 router.put('/:id', commentController.updateUserComment);
 router.delete('/:id', commentController.deleteUserComment);

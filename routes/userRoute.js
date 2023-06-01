@@ -3,11 +3,13 @@ const router = express.Router();
 
 // importación de userController
 const userController = require('../controllers/userController');
+const authController = require('../controllers/authController');
 
 // rutas para el usuario
-router.get('/:email&:password', userController.getUser);
+router.get('/', userController.getAllUsers);
 router.post('/', userController.createUser);
-router.put('/:email', userController.updateUser);
-router.delete('/:email', userController.deleteUser);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
+router.post('/login', authController.authenticateUser);
 
 module.exports = router;

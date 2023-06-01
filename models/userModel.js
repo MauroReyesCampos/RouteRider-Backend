@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 // dirección de la base de datos en MongoDb
-const uri ='mongodb+srv://admin:Plx2MNJXr9ycW2Ye@routeraider.gtszcgc.mongodb.net/userDb?retryWrites=true&w=majority';
+const uri ='mongodb+srv://admin:Plx2MNJXr9ycW2Ye@routerider.ugekxw2.mongodb.net/routeriderDB?retryWrites=true&w=majority';
 
 // conexión a la base de datos
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -11,18 +11,18 @@ mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
 
 // creación del esquema
 const userSchema = new mongoose.Schema({
-    name: {type: String, required: true},
+    firstName: {type: String, required: true},
     lastName: {type: String, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
     birthDate: {type: Date, required: false},
     city: {type: String, required: false},
-    movil: {type: Number, required: false},
+    mobile: {type: Number, required: false},
     motorcycle: {type: Boolean, required: false},
     brand: {type: String, required: false},
     model: {type: String, required: false},
     year: {type: Number, required: false},
-    registerDate: {type: Date, required: false}
+    registerDate: {type: Date, required: true}
 });
 
 // exportación del esquema a la colección en la base de datos

@@ -1,69 +1,70 @@
+const { json } = require('express');
 const userModel = require('../models/userModel');
+const bcrypt = require("bcryptjs");
 
 // metodo para obtener el usuario
-exports.getUser = (req, res) => {
-    const {email, password} = req.params;
-
-    userModel.findOne({email: email, password: password})
-    .then(email => {
-        if(!email || !password) throw new Error('User or password incorrect')
-        res.json(email);
-    })
-    .catch(err => res.status(500).json({error: err.message}))
+exports.getAllUsers = (req, res) => {
+    userModel.find()
+    .then(users => res.json(users))
+    .catch(err => res.status(500).json({error: err.message}));
 };
 
 // metodo para crear un usuario
 exports.createUser = (req, res) => {
-    const {name, lastName, email, password, birthDate, city, movil, motorcycle, brand, model, year, registerDate} = req.body;
-    const newUser = new userModel({
-        name,
-        lastName,
-        email,
-        password,
-        birthDate,
-        city,
-        movil,
-        motorcycle,
-        brand,
-        model,
-        year,
-        registerDate
-    });
-
-    userModel.findOne({email: email})
-    .then(user => {
-        if(user) {
-            throw new Error('User already exist')
-        } else {    
+    const {firstName, lastName, email, password, birthDate, city, mobile, motorcycle, brand, model, year, registerDate} = req.body;
+    const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, function(err, hash){
+        if(err) {
+            return res.status(500).json({error: err.message});
+        } else {
+            const newUser = new userModel({
+                firstName,
+                lastName,
+                email,
+                password: hash,
+                birthDate,
+                city,
+                mobile,
+                motorcycle,
+                brand,
+                model,
+                year,
+                registerDate
+            });
             newUser.save()
-            .then(() => res.status(201).json({success: 'User created'}))
+            .then(() => res.status(201).json({success: "User created"}))
             .catch(err => res.status(500).json({error: err.message}));
         }
-    })
-    .catch(err => res.status(500).json({error: err.message}))
+    });
 };
 
 // metodo para actualizar un usuario
 exports.updateUser = (req, res) => {
-    const {email} = req.params;
-    const {name, lastName, password, birthDate, city, movil, motorcycle, brand, model, year, registerDate} = req.body;
-
-    userModel.findOneAndUpdate({email}, {name, lastName, email, password, birthDate, city, movil, motorcycle, brand, model, year, registerDate}, {new: true})
-    .then(user => {
-        if (!user) throw new Error(`User ${email} not found`)
-        res.status(201).json(user);
-    })
-    .catch(err => res.status(500).json({error: err.message}));
+    const {id} = req.params;
+    const saltRounds = 10;
+    const {firstName, lastName, email, password, birthDate, city, mobile, motorcycle, brand, model, year, registerDate} = req.body;
+    bcrypt.hash(password, saltRounds, function(err, hash){
+        if(err) {
+            return res.status(500).json({error: err.message});
+        } else {
+            userModel.findByIdAndUpdate(id, {firstName, lastName, email, password: hash, birthDate, city, mobile, motorcycle, brand, model, year, registerDate}, {new: true})
+            .then(user => {
+                if(!user) throw new Error(`User with ID: ${email} not found`);
+                res.status(200).json({user});
+            })
+            .catch(err => res.status(404).json({error: err.message}));
+        }
+    });
 };
 
 // metodo para eliminar un usuario
 exports.deleteUser = (req, res) => {
-    const {email} = req.params;
+    const {id} = req.params;
 
-    userModel.findOneAndDelete({email})
+    userModel.findByIdAndDelete(id)
     .then(user => {
-        if (!user) throw new Error(`User ${email} not found`)
-        res.status(201).json({success: `User ${email} deleted`});
+        if (!user) throw new Error(`User ${id} not found`)
+        res.status(201).json({success: `User ${user.email} deleted`});
     })
     .catch(err => res.status(500).json({error: err.message}));
 };
