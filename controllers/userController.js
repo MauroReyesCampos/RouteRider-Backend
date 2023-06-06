@@ -2,38 +2,59 @@ const { json } = require('express');
 const userModel = require('../models/userModel');
 const bcrypt = require("bcryptjs");
 
-// metodo para obtener el usuario
+// metodo para obtener todos los usuarios
 exports.getAllUsers = (req, res) => {
     userModel.find()
     .then(users => res.json(users))
     .catch(err => res.status(500).json({error: err.message}));
 };
 
+// metodo para obtener los datos del usuario que inicia sesión
+exports.getUserData = (req, res) => {
+    const {email} = req.params;
+    userModel.findOne({email})
+    .then ((user) => {
+        if (user) {
+            res.json({user});
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    })
+    .catch(err => res.status(500).json({error: err.message}));
+}
+
 // metodo para crear un usuario
 exports.createUser = (req, res) => {
     const {firstName, lastName, email, password, birthDate, city, mobile, motorcycle, brand, model, year, registerDate} = req.body;
     const saltRounds = 10;
-    bcrypt.hash(password, saltRounds, function(err, hash){
-        if(err) {
-            return res.status(500).json({error: err.message});
+    userModel.findOne({email})
+    .then ((user) => {
+        if(user) {
+            return res.status(400).json({error: "User already exist"}) // valida que el usuario no exita
         } else {
-            const newUser = new userModel({
-                firstName,
-                lastName,
-                email,
-                password: hash,
-                birthDate,
-                city,
-                mobile,
-                motorcycle,
-                brand,
-                model,
-                year,
-                registerDate
+            bcrypt.hash(password, saltRounds, function(err, hash){
+                if(err) {
+                    return res.status(500).json({error: err.message});
+                } else {
+                    const newUser = new userModel({
+                        firstName,
+                        lastName,
+                        email,
+                        password: hash,
+                        birthDate,
+                        city,
+                        mobile,
+                        motorcycle,
+                        brand,
+                        model,
+                        year,
+                        registerDate: new Date
+                    });
+                    newUser.save()
+                    .then(() => res.status(201).json({success: "User created"}))
+                    .catch(err => res.status(500).json({error: err.message}));
+                }
             });
-            newUser.save()
-            .then(() => res.status(201).json({success: "User created"}))
-            .catch(err => res.status(500).json({error: err.message}));
         }
     });
 };

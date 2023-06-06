@@ -7,6 +7,7 @@ const authController = require('../controllers/authController');
 
 // rutas para el usuario
 router.get('/', userController.getAllUsers);
+router.get('/:email', userController.getUserData);
 router.post('/', userController.createUser);
 router.put('/:id', userController.updateUser);
 router.delete('/:id', userController.deleteUser);

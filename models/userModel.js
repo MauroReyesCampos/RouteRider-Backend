@@ -6,7 +6,7 @@ const uri ='mongodb+srv://admin:Plx2MNJXr9ycW2Ye@routerider.ugekxw2.mongodb.net/
 
 // conexión a la base de datos
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
-.then(() => console.log('Conexión exitosa a la base de datos'))
+.then(() => console.log('Database connection successful'))
 .catch(err => console.error('Error al conectar a la base de datos', err));
 
 // creación del esquema
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     brand: {type: String, required: false},
     model: {type: String, required: false},
     year: {type: Number, required: false},
-    registerDate: {type: Date, required: true}
+    registerDate: {type: Date, required: false}
 });
 
 // exportación del esquema a la colección en la base de datos
