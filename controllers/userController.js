@@ -13,13 +13,7 @@ exports.getAllUsers = (req, res) => {
 exports.getUserData = (req, res) => {
     const {email} = req.params;
     userModel.findOne({email})
-    .then ((user) => {
-        if (user) {
-            res.json({user});
-        } else {
-            res.status(404).json({ error: 'User not found' });
-        }
-    })
+    .then ((user) => res.json({user}))
     .catch(err => res.status(500).json({error: err.message}));
 }
 
