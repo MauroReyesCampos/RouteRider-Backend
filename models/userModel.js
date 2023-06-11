@@ -15,12 +15,12 @@ const userSchema = new mongoose.Schema({
     lastName: {type: String, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
-    birthDate: {type: Date, required: false},
-    city: {type: String, required: false},
-    mobile: {type: Number, required: false},
+    birthday: {type: String, required: true},
+    phone: {type: Number, required: false},
     motorcycle: {type: Boolean, required: false},
     brand: {type: String, required: false},
     model: {type: String, required: false},
+    type: {type: String, required: false},
     year: {type: Number, required: false},
     registerDate: {type: Date, required: false}
 });

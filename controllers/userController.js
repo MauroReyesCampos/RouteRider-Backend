@@ -19,7 +19,7 @@ exports.getUserData = (req, res) => {
 
 // metodo para crear un usuario
 exports.createUser = (req, res) => {
-    const {firstName, lastName, email, password, birthDate, city, mobile, motorcycle, brand, model, year, registerDate} = req.body;
+    const {firstName, lastName, email, password, birthday, phone, motorcycle, brand, model, type, year} = req.body;
     const saltRounds = 10;
     userModel.findOne({email})
     .then ((user) => {
@@ -35,17 +35,19 @@ exports.createUser = (req, res) => {
                         lastName,
                         email,
                         password: hash,
-                        birthDate,
-                        city,
-                        mobile,
+                        birthday,
+                        phone,
                         motorcycle,
                         brand,
                         model,
+                        type,
                         year,
                         registerDate: new Date
                     });
+                    const userFirstName = newUser.firstName;
+                    const userLastName = newUser.lastName
                     newUser.save()
-                    .then(() => res.status(201).json({success: "User created"}))
+                    .then(() => res.status(201).json({success: "User created", userFirstName, userLastName}))
                     .catch(err => res.status(500).json({error: err.message}));
                 }
             });

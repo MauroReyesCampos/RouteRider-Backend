@@ -11,10 +11,11 @@ const mongoose = require('mongoose');
 
 // creación del esquema
 const commentSchema = new mongoose.Schema({
-    userEmail: {type: String, required: true},
+    userName: {type: String, required: false},
+    userLastname: {type: String, require: false},
     userComment: {type: String, required: true},
-    commentRoute: {type: String, required: true},
-    commentDate: {type: Date, required: true}
+    commentRoute: {type: String, required: false},
+    commentDate: {type: Date, required: false}
 });
 
 // exportación del esquema a la colección en la base de datos

@@ -18,12 +18,13 @@ exports.authenticateUser = (req, res) => {
         else if(result){
             // si la contraseña coincide, el usuario se autentica exitosamente.
             const userFirstName = user.firstName;
+            const userLastName = user.lastName;
             const token = jwt.sign({userId: user._id}, "secreto", {expiresIn:"1h"});
-            res.status(200).json({message:"authentication successful", token, userFirstName});
+            res.status(200).json({message:"authentication successful", token, userFirstName, userLastName});
         }
         else{
             // si la contraseña no coincide, se devuelve un mensaje de error.
-            res.status(401).json({error:"authentication failed"});
+            res.status(404).json({error:"authentication failed"});
         }
     }
     );
