@@ -19,7 +19,7 @@ exports.createRouteComment = (req, res) => {
         commentDate: new Date
     });
     newComment.save()
-    .then(() => res.status(201).json({success: 'Comment created'}))
+    .then((comment) => res.status(201).json(comment))
     .catch(err => res.status(500).json({error: err.message}));
 };
 

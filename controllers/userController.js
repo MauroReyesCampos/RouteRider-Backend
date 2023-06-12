@@ -10,16 +10,20 @@ exports.getAllUsers = (req, res) => {
 };
 
 // metodo para obtener los datos del usuario que inicia sesión
-exports.getUserData = (req, res) => {
+exports.getUser = (req, res) => {
     const {email} = req.params;
     userModel.findOne({email})
-    .then ((user) => res.json({user}))
+    .then (user => {
+        if(!user) {
+            return res.status(400).json({error: "User don't exist"})
+        }
+    })
     .catch(err => res.status(500).json({error: err.message}));
 }
 
 // metodo para crear un usuario
 exports.createUser = (req, res) => {
-    const {firstName, lastName, email, password, birthday, phone, motorcycle, brand, model, type, year} = req.body;
+    const {firstName, lastName, email, password, birthday, city, motorcycle, brand, model, type, year} = req.body;
     const saltRounds = 10;
     userModel.findOne({email})
     .then ((user) => {
@@ -36,7 +40,7 @@ exports.createUser = (req, res) => {
                         email,
                         password: hash,
                         birthday,
-                        phone,
+                        city,
                         motorcycle,
                         brand,
                         model,
@@ -59,7 +63,7 @@ exports.createUser = (req, res) => {
 exports.updateUser = (req, res) => {
     const {id} = req.params;
     const saltRounds = 10;
-    const {firstName, lastName, email, password, birthDate, city, mobile, motorcycle, brand, model, year, registerDate} = req.body;
+    const {firstName, lastName, email, password, birthDate, city, motorcycle, brand, model, year, registerDate} = req.body;
     bcrypt.hash(password, saltRounds, function(err, hash){
         if(err) {
             return res.status(500).json({error: err.message});
