@@ -17,11 +17,11 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true},
     birthday: {type: String, required: true},
     city: {type: String, required: true},
-    motorcycle: {type: Boolean, required: true},
+    motorcycle: {type: String, required: true},
     brand: {type: String, required: false},
     model: {type: String, required: false},
     type: {type: String, required: false},
-    year: {type: Number, required: false},
+    year: {type: String, required: false},
     registerDate: {type: Date, required: false}
 });
 
