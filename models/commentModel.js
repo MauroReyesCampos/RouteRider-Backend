@@ -11,8 +11,10 @@ const mongoose = require('mongoose');
 
 // creación del esquema
 const commentSchema = new mongoose.Schema({
-    userEmail: {type: String, required: false},
-    userComment: {type: String, required: false},
+    userName: {type: String, required: false},
+    userLastname: {type: String, require: false},
+    userComment: {type: String, required: true},
+    commentRoute: {type: String, required: false},
     commentDate: {type: Date, required: false}
 });
 
